@@ -10,10 +10,10 @@
 
 ## Install RDO by Using Packstack
 
-### Set Up CentOS 7.2 for RDO
+### Install CentOS 7.2 for RDO
 
 - Install CentOS-7-x86_64-DVD-1511.iso with minimum configuration
- - Language is English
+ - Set Language English
 
 ### Previously Set Up
 
@@ -51,6 +51,31 @@ nmcli d show ens160
 ip addr show
 ```
 
+
+- Network System
+
+```
+$ sudo systemctl disable NetworkManager
+$ sudo systemctl stop NetworkManager
+$ sudo systemctl enable network
+$ sudo systemctl start network
+```
+
+
+- LOCALE
+
+```
+date
+localectl status
+localectl list-locales
+localectl set-locale LANG=en_US.utf-8
+cat /etc/locale.conf
+  LANG=en_US.utf-8
+  LC_ALL=en_US.utf-8
+
+source /etc/locale.conf
+date
+```
 
 - DNS
 
@@ -100,8 +125,25 @@ SELINUX=disabled
 
 ```
 #add yum riken
+[base-riken]
+name=CentOS-$releasever - Base-riken
+baseurl=http://ftp.riken.jp/Linux/centos/$releasever/os/$basearch/
+gpgcheck=1
+enabled=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
 
+
+grep -i ./* "Extras"
+# On CentOS, the Extras repository provides the RPM that enables the OpenStack repository.
+
+
+yum clean all
+yum lists
+
+# Options below:
+yum -y install openssh-server openssh-clients telnet wget man curl bind-utils git tree unzip
 ```
+
 
 - TimeZone
 
@@ -133,7 +175,38 @@ systemctl list-unit-files --type service | egrep "(ntp|chronyd)"
 systemctl restart chronyd.service
 
 chronyc sources
+```
 
 
+
+### Install RDO
+
+- Software Repositories
 
 ```
+yum install -y centos-release-openstack-mitaka
+yum update -y
+yum install -y openstack-packstack
+```
+
+
+- Install Packstack Installer
+
+```
+yum install -y openstack-packstack
+```
+
+
+- Run Packstack to install OpenStack
+
+```
+packstack --allinone
+```
+
+
+### Access Test
+
+- Access
+ - Check OpenStack login account this command `cat /root/keystonerc_admin`
+ - http://$YOURIP/dashboard
+  - admin/[Password is written in the above keystonerc_admin file]
