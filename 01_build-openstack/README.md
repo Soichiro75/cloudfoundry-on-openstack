@@ -339,7 +339,7 @@ http://192.168.101.1/dashboard
 <img src="https://github.com/Soichiro75/cloudfoundry-on-openstack/blob/master/01_build-openstack/images/2016-07-14_01_LoginOpenStackDashBoard.png" width="320px" title="LoginOpenStackDashBoard">
 
 
-<img src="https://github.com/Soichiro75/coudfoundry-on-openstack/blob/master/images/2016-07-14_02_OpenStackDashBoard.png" width="320px" title="OpenStackDashBoard">
+<img src="https://github.com/Soichiro75/coudfoundry-on-openstack/blob/master/01_build-openstack/images/2016-07-14_02_OpenStackDashBoard.png" width="320px" title="OpenStackDashBoard">
 
 ```
 # Open by WebBrowser "http://$YOURIP/nagios"　on your another PC
@@ -348,7 +348,7 @@ http://192.168.101.1/dashboard
 http://192.168.101.1/nagios
 ```
 
-<img src="https://github.com/Soichiro75/coudfoundry-on-openstack/blob/master/images/2016-07-14_03_LoginNagios.png" width="320px" title="LoginNagios">
+<img src="https://github.com/Soichiro75/coudfoundry-on-openstack/blob/master/01_build-openstack/images/2016-07-14_03_LoginNagios.png" width="320px" title="LoginNagios">
 
 
-<img src="https://github.com/Soichiro75/coudfoundry-on-openstack/blob/master/images/2016-07-14_04_NagiosDashBoard.png" width="320px" title="NagiosDashBoard">
+<img src="https://github.com/Soichiro75/coudfoundry-on-openstack/blob/master/01_build-openstack/images/2016-07-14_04_NagiosDashBoard.png" width="320px" title="NagiosDashBoard">
