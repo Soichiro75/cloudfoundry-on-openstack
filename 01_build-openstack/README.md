@@ -336,7 +336,7 @@ cat ~/keystonerc_admin
 http://192.168.101.1/dashboard
 ```
 
-<img src="https://github.com/Soichiro75/coudfoundry-on-openstack/blob/master/images/2016-07-14_01_LoginOpenStackDashBoard.png" width="320px" title="LoginOpenStackDashBoard">
+<img src="https://github.com/Soichiro75/cloudfoundry-on-openstack/blob/master/01_build-openstack/images/2016-07-14_01_LoginOpenStackDashBoard.png" width="320px" title="LoginOpenStackDashBoard">
 
 
 <img src="https://github.com/Soichiro75/coudfoundry-on-openstack/blob/master/images/2016-07-14_02_OpenStackDashBoard.png" width="320px" title="OpenStackDashBoard">
