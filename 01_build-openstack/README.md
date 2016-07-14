@@ -7,86 +7,120 @@
 - [bosh-init on openstack](https://bosh.io/docs/init-openstack.html)
 
 
-
 ## Install RDO by Using Packstack
 
 ### Install CentOS 7.2 for RDO
 
 - Install CentOS-7-x86_64-DVD-1511.iso with minimum configuration
  - Set Language English
+ - Set Keyboard YOURKEYBOARD(Japanese)
+ - Set date-time YOURTIMEZONE(Asia/Tokyo)
+ - Need not to set up Network, Hostname, NTP, etc..
+
 
 ### Previously Set Up
 
 - Hostname
 
 ```
-# hostname
-localhost.localdomain
+hostname
+  localhost.localdomain
 
-# hostnamectl set-hostname centos
+hostnamectl set-hostname openstack.ts.local
 
-# hostname
-centos
+hostname
+  openstack.ts.local
 
-# cat /etc/hostname
-centos
-
+cat /etc/hostname
+  openstack.ts.local
 ```
 
 
 - IP Address
 
 ```
+
+# confirm device name
+#Note:  The below case DEVICE NAME is "enp2s0f0",
+#       you should replace "enp2s0f0" to your DEVICE NAME in the following procedures.
 nmcli d
-nmcli d show ens160
+  DEVICE    TYPE      STATE         CONNECTION
+  enp2s0f0  ethernet  disconnected  --
+  lo        loopback  unmanaged     --
 
-nmcli c mod ens160 ipv4.method manual
-nmcli c mod ens160 ipv4.addresses 10.10.10.2/24
-nmcli c mod ens160 ipv4.gateway 10.10.10.1
+nmcli d show enp2s0f0
 
-systemctl restart network
+# set up
+nmcli c mod enp2s0f0 ipv4.addresses 192.168.101.1/24
+nmcli c mod enp2s0f0 ipv4.gateway 192.168.101.254
+nmcli c mod enp2s0f0 ipv4.method manual
+nmcli c mod enp2s0f0 connection.autoconnect yes
 
-nmcli d show ens160
+# reflect the setting
+nmcli c down enp2s0f0; nmcli c up enp2s0f0
+
+# confirm the reflecting
+nmcli d show enp2s0f0
+  DEVICE    TYPE      STATE         CONNECTION
+  enp2s0f0  ethernet  connected     enp2s0f0
+  lo        loopback  unmanaged     --
 
 ip addr show
+
+ping 8.8.8.8
+  Ctrl+C
 ```
 
 
-- Network System
+- DNS
 
 ```
-$ sudo systemctl disable NetworkManager
-$ sudo systemctl stop NetworkManager
-$ sudo systemctl enable network
-$ sudo systemctl start network
+# set up
+nmcli c mod enp2s0f0 ipv4.dns 8.8.8.8,8.8.4.4
+nmcli c mod enp2s0f0 ipv4.dns-search ts.local
+
+# confirm the setting
+cat /etc/sysconfig/network-scripts/ifcfg-enp2s0f0
+cat /etc/resolv.conf
+
+# reflect the setting
+nmcli c down enp2s0f0; nmcli c up enp2s0f0
+
+# confirm the reflecting
+ping www.google.com
+  Ctrl + C
 ```
 
 
 - LOCALE
 
 ```
-date
+# https://www.rdoproject.org/install/quickstart/ > Summary for the impatient
+
+# prior confirmation
 localectl status
-localectl list-locales
+
+localectl list-locales | grep -ie en_ | grep -ie utf8
+
+# set up
 localectl set-locale LANG=en_US.utf-8
+
 cat /etc/locale.conf
+  LANG=en_US.utf-8
+
+vi /etc/environment
   LANG=en_US.utf-8
   LC_ALL=en_US.utf-8
 
-source /etc/locale.conf
-date
-```
+# reflect the setting
+exit
+login
 
-- DNS
+# reflect the reflecting
+localectl status
 
+locale
 ```
-nmcli c mod ens160 ipv4.dns 8.8.8.8,8.8.4.4
-nmcli c mod ens160 ipv4.dns-search hogehoge.com
-cat /etc/resolv.conf
-cat /etc/sysconfig/network-s/ifcfg-e
-systemctl restart network
-```
-
 
 <!-- You don't need not to make disable SELinux, maybe.
 https://www.rdoproject.org/install/quickstart/
@@ -114,33 +148,35 @@ SELINUX=disabled
 - FireWall
 
 ```
-
-[root@centos ~]# systemctl stop firewalld
-
-[root@centos ~]# systemctl disable firewalld
+# disable FireWall
+systemctl stop firewalld
+systemctl disable firewalld
 ```
 
 
 - YumRepository
 
 ```
-#add yum riken
-[base-riken]
-name=CentOS-$releasever - Base-riken
-baseurl=http://ftp.riken.jp/Linux/centos/$releasever/os/$basearch/
-gpgcheck=1
-enabled=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+# set up
+# add riken repository (because I'm in Japan)
+vi /etc/yum.repos.d/CentOS-Base.repo
+  [base-riken]
+  name=CentOS-$releasever - Base-riken
+  baseurl=http://ftp.riken.jp/Linux/centos/$releasever/os/$basearch/
+  gpgcheck=1
+  enabled=1
+  gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
 
+# confirm there are Extras repositories
+# On CentOS, the Extras repository provides the RPM that enables the OpenStack repository
+grep -i Extras /etc/yum.repos.d/*
 
-grep -i ./* "Extras"
-# On CentOS, the Extras repository provides the RPM that enables the OpenStack repository.
-
-
+# reflect the setting and confirm the reflecting
 yum clean all
-yum lists
 
-# Options below:
+yum list
+
+# Options:
 yum -y install openssh-server openssh-clients telnet wget man curl bind-utils git tree unzip
 ```
 
@@ -148,34 +184,81 @@ yum -y install openssh-server openssh-clients telnet wget man curl bind-utils gi
 - TimeZone
 
 ```
+# prior confirmation
 timedatectl status
-timedatectl list-timezones
+  Local time: Thu 2016-07-14 15:50:45 JST
+  Universal time: Thu 2016-07-14 06:50:45 UTC
+  RTC time: Thu 2016-07-14 06:50:45
+  Time zone: Asia/Tokyo (JST, +0900)
+  NTP enabled: n/a
+  NTP synchronized: no
+  RTC in local TZ: no
+  DST active: n/a
+
+timedatectl list-timezones | grep Tokyo
+  Asia/Tokyo
+
+# set up
 timedatectl set-timezone Asia/Tokyo
+
+# confirm the reflecting
 timedatectl status
+  Local time: Thu 2016-07-14 15:50:45 JST
+  Universal time: Thu 2016-07-14 06:50:45 UTC
+  RTC time: Thu 2016-07-14 06:50:45
+  Time zone: Asia/Tokyo (JST, +0900)
+  NTP enabled: n/a
+  NTP synchronized: no
+  RTC in local TZ: no
+  DST active: n/a
+
+date
+
 ```
 
 
 - NTP
 
 ```
-# yum -y install chrony
+# set up and confirm
+yum -y install chrony
 
-# rpm -qa | grep chrony
-chrony-1.29.1-1.el7.centos.x86_64
+rpm -qa | grep chrony
+  chrony-2.1.1-1.el7.centos.x86_64
 
-vi /etc/chrony.conf
-  server
+# if you have NTP Server you set up below
+## vi /etc/chrony.conf
+## server xxx.xxx.xxx
 
-
-# systemctl stop ntpd.service
-# systemctl disable ntpd.service
+# reflect the setting
+## if you installed ntpd, you should stop ntpd as below
+## systemctl stop ntpd.service
+## systemctl disable ntpd.service
 
 systemctl enable chronyd.service
-systemctl list-unit-files --type service | egrep "(ntp|chronyd)"
+
 systemctl restart chronyd.service
+
+systemctl list-unit-files --type service | egrep "(ntp|chronyd)"
+  chronyd.service   enabled
 
 chronyc sources
 ```
+
+
+- Network System
+
+```
+# https://www.rdoproject.org/install/quickstart/ > Step0 Network
+systemctl disable NetworkManager
+
+systemctl stop NetworkManager
+
+systemctl enable network
+
+systemctl start network
+```
+
 
 
 
