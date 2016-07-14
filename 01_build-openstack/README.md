@@ -18,7 +18,7 @@
  - Need not to set up Network, Hostname, NTP, etc..
 
 
-### Previously Set Up
+### Previously Set Up CentOS 7.2 for RDO
 
 - Hostname
 
@@ -231,6 +231,7 @@ rpm -qa | grep chrony
 ## server xxx.xxx.xxx
 
 # reflect the setting
+
 ## if you installed ntpd, you should stop ntpd as below
 ## systemctl stop ntpd.service
 ## systemctl disable ntpd.service
@@ -267,15 +268,24 @@ systemctl start network
 - Software Repositories
 
 ```
+# set up the RDO repository to install OpenStack
+
+# Below procedures is for CentOS not RHEL.
+# Probably, it is more good to choice Liberty than mitaka.
+# https://bosh.io/docs/init-openstack.html > supported releases: Liberty (actively tested)
+# But I try to use mitaka
 yum install -y centos-release-openstack-mitaka
+
+# Update your current packages
+# Maybe, it takes long time (In my case, 5 minutes)
 yum update -y
-yum install -y openstack-packstack
 ```
 
 
 - Install Packstack Installer
 
 ```
+# Install Packstack Installer
 yum install -y openstack-packstack
 ```
 
@@ -283,13 +293,62 @@ yum install -y openstack-packstack
 - Run Packstack to install OpenStack
 
 ```
+# Run Packstack to install OpenStack
+# Maybe, it takes long time (In my case, 25 minutes)
 packstack --allinone
+  Welcome to the Packstack setup utility
+    (Omitted)
+  **** Installation completed successfully ******
+
+  Additional information:
+  * A new answerfile was created in: /root/packstack-answers-20160714-161937.txt
+  * Time synchronization installation was skipped. Please note that unsynchronized time on server instances might   be problem for some OpenStack components.
+  * File /root/keystonerc_admin has been created on OpenStack client host 192.168.101.1. To use the command line  tools you need to source the file.
+  * To access the OpenStack Dashboard browse to http://192.168.101.1/dashboard .
+  Please, find your login credentials stored in the keystonerc_admin in your home directory.
+  * To use Nagios, browse to http://192.168.101.1/nagios username: nagiosadmin, password: f94c599b45fd4fe3
+  * Because of the kernel update the host 192.168.101.1 requires reboot.
+  * The installation log file is available at: /var/tmp/packstack/20160714-161936-zA8aQQ/openstack-setup.log
+  * The generated manifests are available at: /var/tmp/packstack/20160714-161936-zA8aQQ/manifests
+
 ```
 
 
 ### Access Test
 
+- prior confirmation
+```
+# Check OpenStack login account
+cat ~/keystonerc_admin
+  unset OS_SERVICE_TOKEN
+  export OS_USERNAME=admin
+  export OS_PASSWORD=730cbb2788888888
+  export OS_AUTH_URL=http://192.168.101.1:5000/v2.0
+  export PS1='[\u@\h \W(keystone_admin)]\$ '
+  export OS_TENANT_NAME=admin
+  export OS_REGION_NAME=RegionOne
+```
+
 - Access
- - Check OpenStack login account this command `cat /root/keystonerc_admin`
- - http://$YOURIP/dashboard
-  - admin/[Password is written in the above keystonerc_admin file]
+```
+# Open by WebBrowser "http://$YOURIP/dashboard"　on your another PC
+# admin/[Password is written in the above keystonerc_admin file]
+http://192.168.101.1/dashboard
+```
+
+<img src="https://github.com/Soichiro75/coudfoundry-on-openstack/blob/master/images/2016-07-14_01_LoginOpenStackDashBoard.png" width="320px" title="LoginOpenStackDashBoard">
+
+
+<img src="https://github.com/Soichiro75/coudfoundry-on-openstack/blob/master/images/2016-07-14_02_OpenStackDashBoard.png" width="320px" title="OpenStackDashBoard">
+
+```
+# Open by WebBrowser "http://$YOURIP/nagios"　on your another PC
+# Username and Password are written the above success message
+# "username: nagiosadmin, password: f94c599b45fd4fe3"
+http://192.168.101.1/nagios
+```
+
+<img src="https://github.com/Soichiro75/coudfoundry-on-openstack/blob/master/images/2016-07-14_03_LoginNagios.png" width="320px" title="LoginNagios">
+
+
+<img src="https://github.com/Soichiro75/coudfoundry-on-openstack/blob/master/images/2016-07-14_04_NagiosDashBoard.png" width="320px" title="NagiosDashBoard">
