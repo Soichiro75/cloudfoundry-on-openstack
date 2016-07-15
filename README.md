@@ -1,9 +1,10 @@
 # cloudfoundry-on-openstack
 
+This document is still incomplete.
+
 <!-- You can build Cloud Foundry test environment on OpenStack, if you can do following "Table of Contents" order.
 -->
 
-This is document still in the process of writing.
 
 
 ## Table of Contents
