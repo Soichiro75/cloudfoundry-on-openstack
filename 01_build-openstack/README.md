@@ -1,6 +1,7 @@
-# cloudfoundry-on-openstack
+# 01_build-openstack
 
 ## Helpful Links
+
 - [RDO Packstack Quickstart](https://www.rdoproject.org/install/quickstart/)
 - [Install Guide RDO](http://docs.openstack.org/liberty/ja/install-guide-rdo/)
 - [docs.cloudfoundry](http://docs.cloudfoundry.org/deploying/openstack/index.html)
@@ -271,9 +272,11 @@ systemctl start network
 # set up the RDO repository to install OpenStack
 
 # Below procedures is for CentOS not RHEL.
-# Probably, it is more good to choice Liberty than mitaka.
+# It is more good to choice OpenStack Liberty than OpenStack Mitaka.
 # https://bosh.io/docs/init-openstack.html > supported releases: Liberty (actively tested)
-# But I try to use mitaka
+# However, I try to use Mitaka in this documents.
+# If you want to use Liberty, you can use below command instead with Mitaka
+# "yum install -y centos-release-openstack-liberty"
 yum install -y centos-release-openstack-mitaka
 
 # Update your current packages
