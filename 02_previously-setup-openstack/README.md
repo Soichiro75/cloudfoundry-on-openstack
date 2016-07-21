@@ -21,7 +21,7 @@
 apt install ruby gem ruby-dev build-essential libxml2 libxml2-dev zlib1g-dev
 ```
 
-- Create a `~/.fog` file and copy the below content:
+- Create a `~/.fog` file and copy the below content, then revise `HOST_IP`, `PASSWORD`, `USERNAME`, `PROJEXT_NAME`, `REGION`. You can find the info where `~/keystonerc_admin` in OpenStack.:
 
 ```
 :openstack:
@@ -32,16 +32,10 @@ apt install ruby gem ruby-dev build-essential libxml2 libxml2-dev zlib1g-dev
   :openstack_region:    REGION # Optional
 ```
 
-In my environment `HOST_IP` is `192.168.101.1`.
-
-
 - Install the fog application in your terminal, then run it in interactive mode:
   - [fog](https://github.com/fog/fog) is the Ruby cloud services library.
 
 ```
-# install ruby
-yum install ruby ruby-devel
-
 # install fog
 gem install fog
 

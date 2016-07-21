@@ -325,7 +325,7 @@ packstack --allinone
 cat ~/keystonerc_admin
   unset OS_SERVICE_TOKEN
   export OS_USERNAME=admin
-  export OS_PASSWORD=730cbb2788888888
+  export OS_PASSWORD=730cbb2707854eb8
   export OS_AUTH_URL=http://192.168.101.1:5000/v2.0
   export PS1='[\u@\h \W(keystone_admin)]\$ '
   export OS_TENANT_NAME=admin
@@ -355,3 +355,32 @@ http://192.168.101.1/nagios
 
 
 <img src="https://github.com/Soichiro75/cloudfoundry-on-openstack/blob/master/01_build-openstack/images/2016-07-14_04_NagiosDashBoard.png" width="320px" title="NagiosDashBoard">
+
+
+### Appendix
+
+#### prepare OpenStack client
+
+If you want to operate OpenStack from another machine.
+
+You have to install "OpenStack command line interface (CLI)".
+
+```
+# Install pip(python package manager)
+apt install python-pip
+
+# Upgrade pip
+pip install --upgrade pip
+
+# Install OpenStack command line interface (CLI)
+# You can install below packages from Ubuntu or another OS vender,
+# but it is often older packages than "Python Package Index(PyPI)"(https://pypi.python.org/).
+# So, you should below packages from PyPI by using "pip install" not Ubuntu by "apt install".
+pip install [below package names]
+  python-novaclient (nova CLI)
+  python-glanceclient (glance CLI)
+  python-keystoneclient (keystone CLI)
+  python-cinderclient (cinder CLI)
+  python-swiftclient (swift CLI)
+  python-quantumclient (quantum CLI)
+```
