@@ -1,5 +1,11 @@
 # 01_build-openstack
 
+There are many way to build OpenStack,
+
+DevStack, RDO, Mirantis OpenStack, SUSE Cloud, Ubuntu OpenStack.
+
+The below procedures are using [RDO](https://www.rdoproject.org/) on CentOS7.
+
 ## Helpful Links
 
 - [RDO Packstack Quickstart](https://www.rdoproject.org/install/quickstart/)
