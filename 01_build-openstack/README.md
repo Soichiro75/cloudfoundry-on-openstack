@@ -6,6 +6,8 @@ DevStack, RDO, Mirantis OpenStack, SUSE Cloud, Ubuntu OpenStack.
 
 The below procedures are using [RDO](https://www.rdoproject.org/) on CentOS7.
 
+
+
 ## Helpful Links
 
 - [RDO Packstack Quickstart](https://www.rdoproject.org/install/quickstart/)
@@ -363,13 +365,13 @@ http://192.168.101.1/nagios
 <img src="https://github.com/Soichiro75/cloudfoundry-on-openstack/blob/master/01_build-openstack/images/2016-07-14_04_NagiosDashBoard.png" width="320px" title="NagiosDashBoard">
 
 
-### Appendix
-
-#### prepare OpenStack client
+## Prepare OpenStack Client
 
 If you want to operate OpenStack from another machine.
 
 You have to install "OpenStack command line interface (CLI)".
+
+- Install "OpenStack CLI"
 
 ```
 # Install pip(python package manager)
@@ -382,11 +384,53 @@ pip install --upgrade pip
 # You can install below packages from Ubuntu or another OS vender,
 # but it is often older packages than "Python Package Index(PyPI)"(https://pypi.python.org/).
 # So, you should below packages from PyPI by using "pip install" not Ubuntu by "apt install".
-pip install [below package names]
-  python-novaclient (nova CLI)
-  python-glanceclient (glance CLI)
-  python-keystoneclient (keystone CLI)
-  python-cinderclient (cinder CLI)
-  python-swiftclient (swift CLI)
-  python-quantumclient (quantum CLI)
+# http://docs.openstack.org/user-guide/common/cli_install_openstack_command_line_clients.html
+#
+pip install python-openstackclient
+pip install python-<BELOW PROJECT NAME>client
+  barbican - Key Manager Service API
+  ceilometer - Telemetry API
+  cinder - Block Storage API and extensions
+  cloudkitty - Rating service API
+  designate - DNS service API
+  fuel - Deployment service API
+  glance - Image service API
+  gnocchi - Telemetry API v3
+  heat - Orchestration API
+  keystone - Identity service API and extensions
+  magnum - Container Infrastructure Management service API
+  manila - Shared file systems API
+  mistral - Workflow service API
+  monasca - Monitoring API
+  murano - Application catalog API
+  neutron - Networking API
+  nova - Compute API and extensions
+  sahara - Data Processing API
+  senlin - Clustering service API
+  swift - Object Storage API
+  trove - Database service API
+
+
+# While you can install the keystone client for interacting with version 2.0 of the service’s API, you should use the openstack client for all Identity interactions. Identity API v2 is deprecated in the Mitaka release.
+```
+
+- Install etc..
+
+```
+# Above "OpenStackCLI" underlie "GET, POST, etc.".
+# You can also use the GET,,, instead of OpenStackCLI.
+# If you use "GET" command for test instead of the OpenStackCLI.
+#
+apt install libwww-perl
+```
+
+Now, I meet some troubles on the clientPC.........
+```
+[root@ubuntu ~(keystone_admin)]# neutron net-create work-net
+Traceback (most recent call last):
+  File "/usr/local/bin/neutron", line 7, in <module>
+    from neutronclient.shell import main
+  File "/usr/local/lib/python2.7/dist-packages/neutronclient/shell.py", line 34, in <module>
+    from keystoneclient.openstack.common.apiclient import exceptions as ks_exc
+ImportError: No module named openstack.common.apiclient
 ```
