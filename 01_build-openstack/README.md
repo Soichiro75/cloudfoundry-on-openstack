@@ -4,12 +4,15 @@ There are many way to build OpenStack,
 
 DevStack, RDO, Mirantis OpenStack, SUSE Cloud, Ubuntu OpenStack.
 
-The below procedures are using [RDO](https://www.rdoproject.org/) on CentOS7.
+The below procedures are using [RDO](https://www.rdoproject.org/) and [Packstack](https://www.rdoproject.org/install/quickstart/) on CentOS7.
 
+Packstack is designed for proof-of-concept deployments, and is not suitable as a production deployment tool. Packstack makes many assumptions in its configuration to simplify the installation process, and cannot deploy services in a highly available (HA) or load balanced configuration, nor provide the flexibility required for configuring complex networking.
 
 
 ## Helpful Links
 
+- [Component_Overview written in Japanese](https://access.redhat.com/documentation/ja-JP/Red_Hat_Enterprise_Linux_OpenStack_Platform/6/html/Component_Overview/chap-intro.html)
+- [Component_Overview written in English](https://access.redhat.com/documentation/Red_Hat_Enterprise_Linux_OpenStack_Platform/6/html/Component_Overview/chap-intro.html)
 - [RDO Packstack Quickstart](https://www.rdoproject.org/install/quickstart/)
 - [Install Guide RDO](http://docs.openstack.org/liberty/ja/install-guide-rdo/)
 - [docs.cloudfoundry](http://docs.cloudfoundry.org/deploying/openstack/index.html)
