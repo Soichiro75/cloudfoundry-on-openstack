@@ -6,7 +6,7 @@ DevStack, RDO, Mirantis OpenStack, SUSE Cloud, Ubuntu OpenStack.
 
 The below procedures are using [RDO](https://www.rdoproject.org/) and [Packstack](https://www.rdoproject.org/install/quickstart/) on CentOS7.
 
-Packstack is designed for proof-of-concept deployments, and is not suitable as a production deployment tool. Packstack makes many assumptions in its configuration to simplify the installation process, and cannot deploy services in a highly available (HA) or load balanced configuration, nor provide the flexibility required for configuring complex networking.
+Note: Packstack is designed for POC(Proof Of Concept) deployments, and is not suitable as a production deployment tool. Packstack makes many assumptions in its configuration to simplify the installation process, and cannot deploy services in a highly available (HA) or load balanced configuration, nor provide the flexibility required for configuring complex networking.
 
 
 ## Helpful Links
