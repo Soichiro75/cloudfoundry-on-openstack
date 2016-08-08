@@ -417,6 +417,26 @@ pip install python-<BELOW PROJECT NAME>client
 # While you can install the keystone client for interacting with version 2.0 of the service’s API, you should use the openstack client for all Identity interactions. Identity API v2 is deprecated in the Mitaka release.
 ```
 
+  - Note:
+
+```
+pip install python-openstackclient
+
+Found existing installation: six 1.4.1
+...
+Uninstalling six-1.4.1:
+...
+OSError: [Errno 1] Operation not permitted: '/tmp/pip-QHCo_Y-uninstall/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/six-1.4.1-py2.7.egg-info'
+
+
+# If you get above error, you can avoid the error as below.
+
+pip install --upgrade pip
+pip install python-openstackclient --upgrade --ignore-installed six
+
+```
+
+
 - Install etc..
 
 ```
